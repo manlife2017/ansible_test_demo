@@ -80,7 +80,42 @@ DATABASES = {
     }
 }
 
+LOGGING = {
+    'version'                 : 1,
+    'disable_existing_loggers': False,
+    'formatters': {  # 日志格式
+        'standard': {
+            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'}
+    },
+    'filters'                 : {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers'                : {
+        'debug' : {
+            'level'      : 'DEBUG',
+            'class'      : 'logging.handlers.RotatingFileHandler',
+            'filename'   : os.path.join(BASE_DIR, 'smkyc_weapp.log'),
+            'maxBytes'   : 1024 * 1024 * 15,  # 15MB
+            'backupCount': 10,
+            'formatter':'standard'
+        },
 
+    },
+    'loggers'                 : {
+        'django.request': {
+            'handlers' : ['debug'],
+            'level'    : 'ERROR',
+            'propagate': True,
+        },
+        'default': {
+            'handlers': ['debug'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
